@@ -1,0 +1,142 @@
+mongosh
+
+use myMondoDiBongo
+
+db.createCollection('Users')
+
+db.createCollection('Posts')
+
+
+
+db.users.insertMany([
+    {name: "German", email: "moltorger@gmail.com", age: 34},
+    {name: "Sofia", email: "inventada@gmail.com", age: 24},  
+     {name: "Ger", email: "mongodibongo@gmail.com", age: 28},
+      {name: "Ivan", email: "ivan@gmail.com", age: 40},
+       {name: "Xavi", email: "xavimath@gmail.com", age: 18},
+        {name: "Gabri", email: "volando@gmail.com", age: 50},
+         {name: "Vicent", email: "public@gmail.com", age: 23},
+          {name: "Rebeca", email: "Kassandra@gmail.com", age: 30},
+           {name: "Vane", email: "anime@gmail.com", age: 39},
+            {name: "Ludovico", email: "ludico@gmail.com", age: 20}
+])
+
+db.posts.insertMany([
+    {title: 1, body: "Lorem impsum 1", Username: "German", Comments: [{Usermame:"Name", Body:"BodyText"}, {Usermame:"Name", Body:"BodyText2"}]},
+    {title: 2, body: "Lorem impsum 2", Username: "Sofia", Comments: [{Usermame:"Name", Body:"BodyText"},{Usermame:"Name", Body:"BodyText2"}]},
+    {title: 3, body: "Lorem impsum 3", Username: "Ger", Comments: [{Usermame:"Name", Body:"BodyText"}]},
+    {title: 4, body: "Lorem impsum 4", Username: "Ivan", Comments:[]},
+    {title: 5, body: "Lorem impsum 5", Username: "Xavi", Comments:[]},
+    {title: 6, body: "Lorem impsum 6", Username: "Gabri", Comments: []},
+    {title: 7, body: "Lorem impsum 7", Username: "Vicent", Comments: []},
+    {title: 8, body: "Lorem impsum 8", Username: "Rebeca", Comments: []},
+    {title: 9, body: "Lorem impsum 9", Username: "Vane", Comments: []},
+    {title: 10, body: "Lorem impsum 10", Username: "Ludovico",  Comments: []},
+    {title: 11, body: "Lorem impsum 11", Username: "Shan", Comments: [{Usermame:"Name", Body:"BodyText"}, {Usermame:"Name", Body:"BodyText2"},{Usermame:"Name", Body:"BodyText3"}]},
+    {title: 12, body: "Lorem impsum 12", Username: "David", Comments: []},
+    {title: 13, body: "Lorem impsum 13", Username: "Yorch", Comments: []},
+    {title: 14, body: "Lorem impsum 14", Username: "Alex", Comments: []},
+    {title: 15, body: "Lorem impsum 15", Username: "Mike", Comments: []}
+])
+
+db.posts.updateOne({title: 1},
+{ $set: {body: "Lorem modified", Username: "Modified", Comments: [{Usermame:"Name", Body:"BodyTextModified"}, {Usermame:"Name", Body:"BodyTextModifoed"}]}})
+
+db.posts.updateOne({title:1},
+{ $set: {body: "Body modified for this exercise"}})
+
+db.posts.updateOne({title: 1},
+{$set:{Comments:[{Usermame:"Name",Body:"Text modified for this exercise again"}, {Usermame:"Name",Body:"BodyText2"}]}})
+
+db.users.updateOne({name: "German"},
+{$set: {name: "Germanicus", email: "germanicuslupus@gmail.com", age: 80}})
+
+db.users.updateOne({name: "Sofia"},
+{ $set: {email: "valorinvaloran@gmail.com"}})
+
+db.users.updateOne({name: "Rebeca},
+{ $inc: {
+    age: 5
+    }
+})
+
+SELECCIONAR TODAS LAS PUBLICACIONES
+
+db.posts.find()
+
+SELECCIONA LAS PUBLICACIONES QUE COINCIDAN CON EL USERNAME INDICADO
+
+db.posts.find({Username: "Vane"})
+
+SELECCIONA TODOS LOS USUARIOS CON UNA EDAD MAYOR A 20
+
+db.users.find({age:{$gt:20}})
+
+SELECCIONA TODOS LOS USUARIOS CON UNA EDAD INFERIOR A 23
+
+db.users.find({age:{$lt:23}})
+
+SELECCIONA TODOS LOS USUARIOS CON UNA EDAD ENTRE 25 Y 30 AÑOS
+
+
+db.users.find({$and:[{age:{$gt:25}},{age:{$lt:30}}]})
+
+MUESTRA TODOS LOS USUARIOS DE MENOR A MAYOR EDAD Y VICEVERSA
+
+db.users.find().sort({age: 1})
+
+db.users.find().sort({age: -1})
+
+SELECCIONA EL NÚMERO TOTAL DE USUARIOS
+
+db.users.find().count()
+
+SELECCIONA TODAS LAS PUBLICACIONES DE LA SIGUIENTE MANERA: TÍTULO DE LA PUBLICACIÓN: "TÍTULO DE LAS PUBLICACIONES"
+
+db.posts.find().forEach((post) => {
+    print("Título de la publicacion: " + post.body)
+})
+
+SELECCIONA SOLO 2 USUARIOS
+
+db.users.find({$or:[{name: "Ludovico"}, {name: "Sofia"}]})
+
+BUSCA POR TITLE 2 PUBLICACIONES
+
+db.posts.find({$or:[{title: 1},{title: 2}]})
+
+ELIMINA A TODOS LOS USUARIOS CON UNA EDAD MAYOR A 30
+
+db.users.deleteMany({age:{$gt:30}})
+
+
+----EXTRA----
+
+
+SELECCIONA EL NÚMERO TOTAL DE PUBLICACIONES QUE TIENEN MÁS DE UN COMENTARIO
+
+db.posts.find({$where: "this.comments.length >= 1"})
+
+SELECCIONA LA ÚLTIMA PUBLIACIÓN CREADA
+
+db.posts.find().limit(1).sort({title:-1})
+
+SELECCIONA 5 PUBLICACIONES Y QUE SEAN LAS ÚLTIMAS CREADAS
+
+db.posts.find().limit(5).sort({title:-1})
+
+ELIMINA TODAS LAS PUBLICACIONES QUE TENGAN MÁS DE UN COMENTARIO
+
+db.posts.deleteMany({$where: "this.comments.length >= 1"})
+
+
+
+
+
+
+
+
+
+
+
+
